@@ -6,6 +6,8 @@
 
 This library allows you to prevent users from navigating away from a page that has pending changes.
 
+It handles navigations inside your app as well as page reloads and closing of the window.
+
 ## Installation
 
 - `npm i -E ngx-pending-changes`
