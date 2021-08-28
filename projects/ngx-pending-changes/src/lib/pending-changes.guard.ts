@@ -33,24 +33,27 @@ export class PendingChangesGuard implements CanDeactivate<unknown> {
     nextState?: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const shouldDeactivateFunc = component[PendingChangesGuardAllowDeactivateMethod];
-    if (typeof shouldDeactivateFunc === 'function') {
-      const shouldDeactivate = shouldDeactivateFunc();
-      if (!shouldDeactivate) {
-        if (typeof this.shouldAllowNavigationFunc === 'function') {
-          if (this.shouldAllowNavigationFunc(component, currentRoute, currentState, nextState)) {
-            return true;
-          }
-        }
+    if (typeof shouldDeactivateFunc !== 'function') {
+      console.error(component);
+      throw new Error(`[ngx-pending-changes] You did not provide the "${PendingChangesGuardAllowDeactivateMethod}()" method in your component!`);
+    }
 
-        let message = this.defaultMessage;
-        const messageFunc = component[PendingChangesGuardConfirmMessageMethod];
-        if (typeof messageFunc === 'function') {
-          message = messageFunc();
+    const shouldDeactivate = shouldDeactivateFunc();
+    if (!shouldDeactivate) {
+      if (typeof this.shouldAllowNavigationFunc === 'function') {
+        if (this.shouldAllowNavigationFunc(component, currentRoute, currentState, nextState)) {
+          return true;
         }
-
-        const forceDeactivate = confirm(message);
-        return forceDeactivate;
       }
+
+      let message = this.defaultMessage;
+      const messageFunc = component[PendingChangesGuardConfirmMessageMethod];
+      if (typeof messageFunc === 'function') {
+        message = messageFunc();
+      }
+
+      const forceDeactivate = confirm(message);
+      return forceDeactivate;
     }
 
     return true;
