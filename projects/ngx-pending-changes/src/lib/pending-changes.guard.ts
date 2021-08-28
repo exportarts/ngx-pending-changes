@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { PendingChangesGuardAllowDeactivateMethod, PendingChangesGuardConfirmMessageMethod, skipIfSameUuidAndReloadQueryParam } from './defaults';
@@ -12,10 +12,13 @@ export class PendingChangesGuard implements CanDeactivate<unknown> {
 
   constructor(
     @Inject(PENDING_CHANGES_DEFAULT_MESSAGE)
+    @Optional()
     private readonly defaultMessage = 'There are pending changes. Do you really want to leave the page?',
     @Inject(SHOULD_ALLOW_NAVIGATION_EXPRESSION)
-    private readonly shouldAllowNavigationFunc: ShouldAllowNavigationExpression,
+    @Optional()
+    private readonly shouldAllowNavigationFunc?: ShouldAllowNavigationExpression,
     @Inject(RELOAD_QUERY_PARAM_NAME)
+    @Optional()
     private readonly reloadQueryParamName?: string,
   ) {
     if (typeof this.shouldAllowNavigationFunc !== 'function') {
@@ -33,8 +36,10 @@ export class PendingChangesGuard implements CanDeactivate<unknown> {
     if (typeof shouldDeactivateFunc === 'function') {
       const shouldDeactivate = shouldDeactivateFunc();
       if (!shouldDeactivate) {
-        if (this.shouldAllowNavigationFunc(component, currentRoute, currentState, nextState)) {
-          return true;
+        if (typeof this.shouldAllowNavigationFunc === 'function') {
+          if (this.shouldAllowNavigationFunc(component, currentRoute, currentState, nextState)) {
+            return true;
+          }
         }
 
         let message = this.defaultMessage;
