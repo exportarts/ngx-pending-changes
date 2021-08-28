@@ -1,7 +1,5 @@
 import { Directive } from '@angular/core';
-import { GuardPendingChanges } from './pending-changes.guard';
-
-export type Mode = 'readonly' | 'edit';
+import { GuardPendingChanges, Mode } from './types';
 
 @Directive()
 export abstract class GuardedDetailView implements GuardPendingChanges {

@@ -1,22 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { PENDING_CHANGES_DEFAULT_MESSAGE, RELOAD_QUERY_PARAM_NAME } from './tokens';
-
-const PendingChangesGuardAllowDeactivateMethod = 'allowDeactivate';
-const PendingChangesGuardConfirmMessageMethod = 'forceDeactivateMessage';
-
-/**
- * Configuration for the `PendingChangesGuard`.
- */
-export interface GuardPendingChanges {
-
-  [PendingChangesGuardAllowDeactivateMethod]: () => boolean;
-  [PendingChangesGuardConfirmMessageMethod]?: () => string;
-
-}
-
-const uuidRegex = /(\w|\d){8}-((\w|\d){4}-){3}(\w|\d){12}/;
+import { PendingChangesGuardAllowDeactivateMethod, PendingChangesGuardConfirmMessageMethod, skipIfSameUuidAndReloadQueryParam } from './defaults';
+import { PENDING_CHANGES_DEFAULT_MESSAGE, RELOAD_QUERY_PARAM_NAME, SHOULD_ALLOW_NAVIGATION_EXPRESSION } from './tokens';
+import { ShouldAllowNavigationExpression } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +11,17 @@ const uuidRegex = /(\w|\d){8}-((\w|\d){4}-){3}(\w|\d){12}/;
 export class PendingChangesGuard implements CanDeactivate<unknown> {
 
   constructor(
-    @Inject(RELOAD_QUERY_PARAM_NAME)
-    private readonly reloadQueryParamName = 'reload',
     @Inject(PENDING_CHANGES_DEFAULT_MESSAGE)
-    private readonly defaultMessage = 'There are pending changes. Do you really want to leave the page?'
-  ) {}
+    private readonly defaultMessage = 'There are pending changes. Do you really want to leave the page?',
+    @Inject(SHOULD_ALLOW_NAVIGATION_EXPRESSION)
+    private readonly shouldAllowNavigationFunc: ShouldAllowNavigationExpression,
+    @Inject(RELOAD_QUERY_PARAM_NAME)
+    private readonly reloadQueryParamName?: string,
+  ) {
+    if (typeof this.shouldAllowNavigationFunc !== 'function') {
+      this.shouldAllowNavigationFunc = skipIfSameUuidAndReloadQueryParam(this.reloadQueryParamName);
+    }
+  }
 
   canDeactivate(
     component: any,
@@ -36,17 +29,11 @@ export class PendingChangesGuard implements CanDeactivate<unknown> {
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
-    const currentUuid = (uuidRegex.exec(currentState.url) || [])[0];
-    // If the next URL is in the same "scope" as the current UUID, we should
-    // allow it. This is likely an empty navigation to re-run the resolver.
-    const shouldSkipCheckRegex = new RegExp(`\/${currentUuid}.*(\\?|&)${this.reloadQueryParamName}=\\d{13}`);
-
     const shouldDeactivateFunc = component[PendingChangesGuardAllowDeactivateMethod];
     if (typeof shouldDeactivateFunc === 'function') {
       const shouldDeactivate = shouldDeactivateFunc();
       if (!shouldDeactivate) {
-        if (shouldSkipCheckRegex.test(nextState?.url || '')) {
+        if (this.shouldAllowNavigationFunc(component, currentRoute, currentState, nextState)) {
           return true;
         }
 
