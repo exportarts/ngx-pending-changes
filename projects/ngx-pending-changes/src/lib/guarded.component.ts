@@ -23,7 +23,7 @@ export abstract class GuardedComponent {
    * injection token. Otherwise, a default message is used.
    *
    * Note that this message is only shown when navigation inside your app happens.
-   * When the page is reloaded or closed, the browsr shows a default message.
+   * When the page is reloaded or closed, the browser shows a default message.
    */
   [getDeactivateMessageMethodName]?(): string;
 

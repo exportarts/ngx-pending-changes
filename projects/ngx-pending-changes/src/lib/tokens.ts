@@ -9,7 +9,7 @@ import { ShouldAllowNavigationExpression } from './types';
  * the superclass.
  *
  * Note that this message is only shown when navigation inside your app happens.
- * When the page is reloaded or closed, the browsr shows a default message.
+ * When the page is reloaded or closed, the browser shows a default message.
  */
 export const PENDING_CHANGES_DEFAULT_MESSAGE = new InjectionToken<string>('PENDING_CHANGES_DEFAULT_MESSAGE');
 
