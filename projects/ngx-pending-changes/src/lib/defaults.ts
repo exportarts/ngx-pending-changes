@@ -29,5 +29,6 @@ export const skipIfSameUuidAndReloadQueryParam: (reloadQueryParamName?: string) 
   }
 }
 
-export const PendingChangesGuardAllowDeactivateMethod = 'allowDeactivate';
-export const PendingChangesGuardConfirmMessageMethod = 'forceDeactivateMessage';
+export const getDeactivateMessageMethodName = 'getDeactivateMessage';
+
+export const defaultMessage = 'There are pending changes. Do you really want to leave the page?';

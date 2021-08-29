@@ -4,6 +4,12 @@ import { ShouldAllowNavigationExpression } from './types';
 /**
  * Provide this token to overwrite the message that is shown in the
  * `confirm()` dialog when the user tries to navigate away and has pending changes.
+ *
+ * You can also provide a custom message for each component by implementing a method of
+ * the superclass.
+ *
+ * Note that this message is only shown when navigation inside your app happens.
+ * When the page is reloaded or closed, the browsr shows a default message.
  */
 export const PENDING_CHANGES_DEFAULT_MESSAGE = new InjectionToken<string>('PENDING_CHANGES_DEFAULT_MESSAGE');
 

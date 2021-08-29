@@ -1,21 +1,9 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { PendingChangesGuardAllowDeactivateMethod, PendingChangesGuardConfirmMessageMethod } from './defaults';
+import { GuardedComponent } from './guarded.component';
 
 export type ShouldAllowNavigationExpression = (
-  component: any,
+  component: GuardedComponent,
   currentRoute: ActivatedRouteSnapshot,
   currentState: RouterStateSnapshot,
   nextState?: RouterStateSnapshot
 ) => boolean;
-
-/**
- * Configuration for the `PendingChangesGuard`.
- */
-export interface GuardPendingChanges {
-
-  [PendingChangesGuardAllowDeactivateMethod]: () => boolean;
-  [PendingChangesGuardConfirmMessageMethod]?: () => string;
-
-}
-
-export type Mode = 'readonly' | 'edit';

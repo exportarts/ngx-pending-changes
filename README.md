@@ -37,26 +37,23 @@ const routes: Routes = [
 
 #### **`detail.component.ts`**
 ```ts
-import { GuardedDetailView, Mode } from 'ngx-pending-changes';
+import { GuardedComponent } from 'ngx-pending-changes';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class DetailComponent extends GuardedDetailView {
+export class DetailComponent extends GuardedComponent {
 
   readonly form = new FormGroup({ /* ... */ });
 
   // This tells the Guard if it should prevent the user from navigating away
   readonly allowDeactivate = () => this.form.pristine;
-  override onModeChange(mode: Mode) {
-    if (mode === 'edit') {
-      this.form.enable();
-    } else {
-      this.form.disable();
-    }
-  }
+
+  // You can provide a custom message for the confirm dialog.
+  // You can also provide a global message with a provider.
+  readonly getDeactivateMessage = () => `You have pending changes. Really leave the page?`;
 
   // When the form is saved, we change the URL to trigger the resolver
   save() {
