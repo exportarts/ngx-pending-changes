@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/exportarts/ngx-pending-changes/compare/v0.3.0...v0.4.0) (2021-08-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* refactor `GuardedComponent`, message handling, better docs; remove `Mode`
+
+* refactor `GuardedComponent`, message handling, better docs; remove `Mode` ([c83b084](https://github.com/exportarts/ngx-pending-changes/commit/c83b084d9e5e44d215a176c09d69856780ea784d))
+
 ## [0.3.0](https://github.com/exportarts/ngx-pending-changes/compare/v0.2.1...v0.3.0) (2021-08-28)
 
 
