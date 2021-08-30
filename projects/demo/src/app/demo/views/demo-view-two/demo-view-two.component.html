@@ -1,0 +1,18 @@
+<h2>View #2</h2>
+
+<form [formGroup]="form">
+  <input class="w-100" formControlName="age" placeholder="Edit and try changing the view">
+</form>
+
+<hr>
+
+<ng-container *ngIf="form.pristine; else dirty">
+  Form is pristine and navigation to view 1 will work without problems.
+</ng-container>
+<ng-template #dirty>
+  Form is dirty and when you try to go to view 1, a confirm dialog will be shown.
+</ng-template>
+
+<hr>
+
+<a routerLink="/demo/one">Go to View 1</a>
