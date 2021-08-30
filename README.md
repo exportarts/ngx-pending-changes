@@ -13,6 +13,18 @@ It handles navigations inside your app as well as page reloads and closing of th
 - `npm i -E ngx-pending-changes`
 - Optionally configure the module with [providers in your `app.module.ts`](./projects/ngx-pending-changes/src/lib/tokens.ts)
 
+## Demo
+
+Have a look at the [demo](./projects/demo) to browse the code you see active in the GIF.
+
+![demo gif](./docs/images/demo.gif)
+
+**Run the demo locally**
+
+1. `npm i`
+2. `npm start`
+3. Open [http://localhost:4200](http://localhost:4200)
+
 ## Example
 
 #### **`routing.module.ts`**
