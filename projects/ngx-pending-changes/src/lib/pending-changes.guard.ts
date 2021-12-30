@@ -11,7 +11,7 @@ import { ShouldAllowNavigationExpression } from './types';
 })
 export class PendingChangesGuard implements CanDeactivate<GuardedComponent> {
 
-  private defaultMessageIsUsed = false;
+  private readonly defaultMessageIsUsed: boolean = false;
 
   constructor(
     @Inject(PENDING_CHANGES_DEFAULT_MESSAGE)

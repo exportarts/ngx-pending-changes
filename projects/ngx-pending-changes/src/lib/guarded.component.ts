@@ -33,7 +33,7 @@ export abstract class GuardedComponent {
    * @see https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
    */
   @HostListener('window:beforeunload', ['$event'])
-  private onBeforeUnload(event: BeforeUnloadEvent) {
+  private onBeforeUnload(event: BeforeUnloadEvent): void {
     if (!this.allowDeactivate()) {
       event.preventDefault();
       event.returnValue = '';
