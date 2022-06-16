@@ -10,7 +10,7 @@ import { GuardedComponent } from 'projects/ngx-pending-changes/src/public-api';
 export class DemoViewTwoComponent extends GuardedComponent implements OnInit {
 
   readonly form = new FormGroup({
-    age: new FormControl(null)
+    name: new FormControl('')
   });
 
   allowDeactivate = () => this.form.pristine;
