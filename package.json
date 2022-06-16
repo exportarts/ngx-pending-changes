@@ -11,7 +11,7 @@
   "scripts": {
     "prestart": "ng build --project ngx-pending-changes",
     "start": "ng serve --project demo",
-    "build": "ng build --configuration production",
+    "build": "ng build --configuration production --project ngx-pending-changes",
     "postbuild": "cp README.md dist/ngx-pending-changes",
     "build:demo": "ng build --project demo",
     "test": "jest --passWithNoTests",
